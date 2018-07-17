@@ -27,9 +27,9 @@ import (
 	"time"
 	"strings"
 
-	"github.com/astaxie/beego/grace"
-	"github.com/astaxie/beego/logs"
-	"github.com/astaxie/beego/utils"
+	"github.com/guerillagrow/beego/grace"
+	"github.com/guerillagrow/beego/logs"
+	"github.com/guerillagrow/beego/utils"
 )
 
 var (

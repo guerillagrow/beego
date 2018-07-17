@@ -15,7 +15,9 @@
 package session
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -80,12 +82,8 @@ func (fs *FileSessionStore) SessionID() string {
 func (fs *FileSessionStore) SessionRelease(w http.ResponseWriter) {
 	filepder.lock.Lock()
 	defer filepder.lock.Unlock()
-	b, err := EncodeGob(fs.values)
-	if err != nil {
-		SLogger.Println(err)
-		return
-	}
-	_, err = os.Stat(path.Join(filepder.savePath, string(fs.sid[0]), string(fs.sid[1]), fs.sid))
+
+	_, err := os.Stat(path.Join(filepder.savePath, string(fs.sid[0]), string(fs.sid[1]), fs.sid))
 	var f *os.File
 	if err == nil {
 		f, err = os.OpenFile(path.Join(filepder.savePath, string(fs.sid[0]), string(fs.sid[1]), fs.sid), os.O_RDWR, 0777)
@@ -102,6 +100,24 @@ func (fs *FileSessionStore) SessionRelease(w http.ResponseWriter) {
 	} else {
 		return
 	}
+
+	// !TODO: merge existing values from file with current in-memory values before saving session. This is to prevent overwriting old data!
+	// !HOT
+	buf := &bytes.Buffer{}
+	io.Copy(buf, f)
+	od, _ := DecodeGob(buf.Bytes())
+	var b []byte
+
+	for k, v := range fs.values {
+		od[k] = v
+	}
+
+	b, err = EncodeGob(od)
+	if err != nil {
+		SLogger.Println(err)
+		return
+	}
+
 	f.Truncate(0)
 	f.Seek(0, 0)
 	f.Write(b)

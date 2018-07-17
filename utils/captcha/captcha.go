@@ -19,9 +19,9 @@
 // package controllers
 //
 // import (
-// 	"github.com/astaxie/beego"
-// 	"github.com/astaxie/beego/cache"
-// 	"github.com/astaxie/beego/utils/captcha"
+// 	"github.com/guerillagrow/beego"
+// 	"github.com/guerillagrow/beego/cache"
+// 	"github.com/guerillagrow/beego/utils/captcha"
 // )
 //
 // var cpt *captcha.Captcha
@@ -66,11 +66,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/cache"
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
-	"github.com/astaxie/beego/utils"
+	"github.com/guerillagrow/beego"
+	"github.com/guerillagrow/beego/cache"
+	"github.com/guerillagrow/beego/context"
+	"github.com/guerillagrow/beego/logs"
+	"github.com/guerillagrow/beego/utils"
 )
 
 var (
