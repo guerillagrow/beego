@@ -105,7 +105,10 @@ func (fs *FileSessionStore) SessionRelease(w http.ResponseWriter) {
 	// !HOT
 	buf := &bytes.Buffer{}
 	io.Copy(buf, f)
-	od, _ := DecodeGob(buf.Bytes())
+	od, dgerr := DecodeGob(buf.Bytes())
+	if dgerr != nil {
+		od = make(map[interface{}]interface{})
+	}
 	var b []byte
 
 	for k, v := range fs.values {
